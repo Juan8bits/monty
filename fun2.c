@@ -6,7 +6,7 @@
 ack.
 * @n: Number of the new node.
 */
-void nop(stack_t **stack, unsigned int n)
+void nop(stack_t **stack, unsigned int line_number)
 {
 	;
 }
