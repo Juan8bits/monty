@@ -82,13 +82,13 @@ int main(int argc, char *argv[])
 	unsigned int lines = 1;
 
 	stack = NULL;
-	if (argc != 1)
+	if (argc != 2)
 	{
 		printf("USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 
-	fp = fopen("test", "r");
+	fp = fopen(argv[1], "r");
 
 	if (fp)
 	{
