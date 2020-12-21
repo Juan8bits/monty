@@ -6,7 +6,7 @@
  * @line_number: number of the new node.
  */
 
-void push(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 {
 	stack_t *new;
 
@@ -15,7 +15,7 @@ void push(stack_t **stack, unsigned int line_number)
 	if (new == NULL)
 		return;
 
-	new->n = n;
+	new->n = gv.g_n;
 	new->prev = NULL;
 
 	if (*stack)
@@ -34,7 +34,7 @@ void push(stack_t **stack, unsigned int line_number)
  * @line_number: number of the new node.
  */
 
-void pall(stack_t **stack, unsigned int line_number)
+void pall(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 {
 	stack_t *temp = *stack;
 
@@ -54,6 +54,13 @@ void pint(stack_t **stack, unsigned int line_number)
 {
 	if (*stack)
 		printf("%d\n", (*stack)->n);
+	else
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		free_dlist(*stack);
+		gv.g_n = -1;
+	}
+
 }
 
 /**
@@ -66,19 +73,21 @@ void pop(stack_t **stack, unsigned int line_number)
 {
 	stack_t *temp;
 
-	if (*stack == NULL)
-		return;
-
-	temp = *stack;
-
-	if (temp->next)
+	if (*stack)
 	{
-		*stack = temp->next;
-		(*stack)->prev = NULL;
+		temp = *stack;
+
+		if (temp->next)
+		{
+			*stack = temp->next;
+			(*stack)->prev = NULL;
+		}
+		else
+			*stack = NULL;
+		free(temp);
 	}
 	else
-		*stack = NULL;
-	free(temp);
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
 }
 
 /**
@@ -104,7 +113,7 @@ void swap(stack_t **stack, unsigned int line_n)
 	}
 	else
 	{
-		fprintf(stderr, "L %d: can't swap, stack too short\n", line_n);
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_n);
 		exit(EXIT_FAILURE);
 	}
 }

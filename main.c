@@ -22,6 +22,7 @@ void (*get_function(char *str, unsigned int line))(stack_t **, unsigned int)
 		{"div", div_},
 		{"mul", mul},
 		{"mod", mod},
+		{"pchar", pchar},
 		{NULL, NULL}
 	};
 
@@ -31,7 +32,7 @@ void (*get_function(char *str, unsigned int line))(stack_t **, unsigned int)
 			return (func[i].f);
 		i++;
 	}
-	fprintf(stderr, "L %d: unknown instruction %s", line, str);
+	fprintf(stderr, "L%d: unknown instruction %s", line, str);
 	exit(EXIT_FAILURE);
 }
 
@@ -43,7 +44,7 @@ void (*get_function(char *str, unsigned int line))(stack_t **, unsigned int)
 char **parse_buffer(char *buffer)
 {
 	int n = 1;
-	char **line, *token;
+	char **line;
 
 	if (!buffer)
 		return (NULL);
@@ -64,7 +65,6 @@ char **parse_buffer(char *buffer)
 	return (line);
 }
 
-
 /**
  * main - dfsdf
  * @argc: dfsdf
@@ -74,33 +74,29 @@ char **parse_buffer(char *buffer)
 int main(int argc, char *argv[])
 {
 	FILE *fp;
-	char buff[1024];
-	char *buffer = buff;
-	/*int len;*/
-	char **tokens = NULL;
+	char buff[1024], *buffer = buff;
 	stack_t *stack;
 	unsigned int lines = 1;
 
+	gv.token = NULL;
+	gv.g_n = 0;
 	stack = NULL;
 	if (argc != 2)
 	{
 		printf("USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-
 	fp = fopen(argv[1], "r");
-
 	if (fp)
 	{
 		while (fgets(buffer, 1024, (FILE *) fp) != NULL)
 		{
-			tokens = parse_buffer(buffer);
-			if (tokens[1])
-				n = atoi(tokens[1]);
-			get_function(tokens[0], lines)(&stack, n);
+			gv.token = parse_buffer(buffer);
+			if (gv.token[1] && is_number(gv.token[1], lines) == 0)
+				gv.g_n = atoi(gv.token[1]);
+			get_function(gv.token[0], lines)(&stack, lines);
 			lines++;
-			free(tokens);
-			printf("--------------------\n");
+			free(gv.token);
 		}
 		fclose(fp);
 		free_dlist(stack);
@@ -117,6 +113,7 @@ int main(int argc, char *argv[])
  * free_dlist - Function that frees a stack_t list.
  * @head: Pointer with address to head node.
  */
+
 void free_dlist(stack_t *head)
 {
 	stack_t *copy;
@@ -128,4 +125,34 @@ void free_dlist(stack_t *head)
 		free(head);
 		head = copy;
 	}
+}
+
+/**
+ * is_number - Function that chekc if a number is passed
+ * @tk: Pointer to tokens
+ * @l_: sdf
+ * Return: asdasd
+ */
+
+int is_number(char *tk, unsigned int l_)
+{
+	int i = 0;
+
+	if (tk)
+	{
+		if (*tk == '-')
+			i++;
+		for (; tk[i]; i++)
+		{
+			if (tk[i] < '0' || tk[i] > '9')
+			{
+				fprintf(stderr, "L%d: usage: push integer", l_);
+				exit(EXIT_FAILURE);
+				return (1);
+			}
+		}
+		return (0);
+	}
+	else
+		return (0);
 }
