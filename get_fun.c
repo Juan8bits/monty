@@ -23,8 +23,8 @@ void (*get_function(char *str, unsigned int line))(stack_t **, unsigned int)
 		{"mul", mul},
 		{"mod", mod},
 		{"pchar", pchar},
-		{"rotl", rotl},
 		{"pstr", pstr},
+		{"rotl", rotl},
 		{NULL, NULL}
 	};
 

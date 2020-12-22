@@ -2,8 +2,8 @@
 
 /**
  * main - Main program function.
- * @argc: Number of arguments.
- * @argv: Array of arguments.
+ * @argc: Number of arguments given.
+ * @argv: Array of arguments given.
  * Return: 0 on successful, 1 if it failed.
  */
 

@@ -79,7 +79,7 @@ void pstr(stack_t **stack, __attribute__((unused))unsigned int line_number)
 		num = copyh->n;
 		if (num == 0)
 			break;
-		if ((num >= 'A' && num <= 'Z') || (num >= 'a' && num <= 'z'))
+		if ((num >= 'a' && num <= 'z') || (num >= 'A' && num <= 'Z'))
 			putchar(num);
 		else
 			break;
