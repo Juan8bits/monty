@@ -6,14 +6,30 @@
  * @line_number: number of the new node.
  */
 
-void push(stack_t **stack, __attribute__((unused)) unsigned int line_number)
+void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new;
 
+	if (is_number(gv.tokens[1]) == 0)
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		free_dlist(*stack);
+		free(gv.tokens);
+		fclose(gv.fp);
+		exit(EXIT_FAILURE);
+	}
+
+	gv.g_n = atoi(gv.tokens[1]);
 	new = malloc(sizeof(stack_t));
 
 	if (new == NULL)
-		return;
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		free_dlist(*stack);
+		free(gv.tokens);
+		fclose(gv.fp);
+		exit(EXIT_FAILURE);
+	}
 
 	new->n = gv.g_n;
 	new->prev = NULL;
@@ -58,9 +74,10 @@ void pint(stack_t **stack, unsigned int line_number)
 	{
 		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
 		free_dlist(*stack);
-		gv.g_n = -1;
+		free(gv.tokens);
+		fclose(gv.fp);
+		exit(EXIT_FAILURE);
 	}
-
 }
 
 /**
@@ -87,7 +104,12 @@ void pop(stack_t **stack, unsigned int line_number)
 		free(temp);
 	}
 	else
+	{
 		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+		free(gv.tokens);
+		fclose(gv.fp);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /**
@@ -114,6 +136,8 @@ void swap(stack_t **stack, unsigned int line_n)
 	else
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", line_n);
+		free(gv.tokens);
+		fclose(gv.fp);
 		exit(EXIT_FAILURE);
 	}
 }
