@@ -24,6 +24,7 @@ void (*get_function(char *str, unsigned int line))(stack_t **, unsigned int)
 		{"mod", mod},
 		{"pchar", pchar},
 		{"rotl", rotl},
+		{"pstr", pstr},
 		{NULL, NULL}
 	};
 

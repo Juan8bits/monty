@@ -61,3 +61,28 @@ void rotl(stack_t **stack, unsigned int line_number)
 		top->prev = temp;
 	}
 }
+
+/**
+ * pstr - The opcode pstr prints the string starting at
+ * the top of the stack, followed by a new line.
+ * @stack: Double pointer with address to stack.
+ * @line_number: Number of line readed.
+ */
+void pstr(stack_t **stack, __attribute__((unused))unsigned int line_number)
+{
+	stack_t *copyh;
+	int num = 0;
+
+	copyh = *stack;
+	for (; copyh; copyh = copyh->next)
+	{
+		num = copyh->n;
+		if (num == 0)
+			break;
+		if ((num >= 'A' && num <= 'Z') || (num >= 'a' && num <= 'z'))
+			putchar(num);
+		else
+			break;
+	}
+	putchar('\n');
+}

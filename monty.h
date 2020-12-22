@@ -69,6 +69,7 @@ void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
 void free_dlist(stack_t *stack);
+void pstr(stack_t **stack, unsigned int line_number);
 
 /* Control Functions */
 int empty_str(char *str);
